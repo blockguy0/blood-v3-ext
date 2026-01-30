@@ -267,6 +267,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'activatePosition') {
     makeApiRequest(`/positions/${message.data.position_id}/activate`, { method: 'POST' })
       .then(result => {
+        console.log('[Background] Activate position result:', result);
+        sendResponse({ success: true, data: result });
+      })
+      .catch(error => {
+        console.error('[Background] Activate position error:', error);
+        sendResponse({ success: false, error: error.message });
+      });
+    return true;
+  }
+
+  if (message.action === 'deletePosition') {
+    makeApiRequest(`/positions/${message.data.position_id}/delete`, { method: 'POST' })
+      .then(result => {
         console.log('[Background] Delete position result:', result);
         sendResponse({ success: true, data: result });
       })

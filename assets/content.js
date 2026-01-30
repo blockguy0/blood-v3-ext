@@ -713,6 +713,7 @@ function generatePanelHTML() {
                     : `${(position.total_pnl_usd || 0) >= 0 ? '+' : ''}$${formatNumber(position.total_pnl_usd || 0)}`}</span>
                 </div>
                 <button class="axiom-position-action" title="${showHiddenPositions ? 'Activate position' : 'Hide position'}">${showHiddenPositions ? '↩' : '×'}</button>
+                ${showHiddenPositions ? '<button class="axiom-position-delete" title="Delete position">🗑</button>' : ''}
               </div>
             `).join('')}
           </div>`;
@@ -963,6 +964,40 @@ async function activatePosition(position) {
   } catch (error) {
     console.error('[Blood Extension] Failed to activate position:', error);
     showNotification('Failed to activate position', 'error');
+  }
+}
+
+async function deletePosition(position) {
+  if (!position || !position.wallets || position.wallets.length === 0) {
+    showNotification('No position to delete', 'error');
+    return;
+  }
+
+  const positionIds = position.wallets.map(w => w.positionId).filter(Boolean);
+  if (positionIds.length === 0) {
+    showNotification('No position IDs found', 'error');
+    return;
+  }
+
+  try {
+    const deletePromises = positionIds.map(id =>
+      sendMessage('deletePosition', { position_id: id })
+    );
+    const results = await Promise.all(deletePromises);
+
+    const failed = results.filter(r => !r.success);
+    if (failed.length > 0) {
+      showNotification(`Failed to delete ${failed.length}/${positionIds.length} positions`, 'error');
+    } else {
+      showNotification(`Deleted ${position.token_symbol}`, 'success');
+    }
+
+    // Remove from hidden positions
+    hiddenPositions = hiddenPositions.filter(p => p.id !== position.id);
+    updatePanelContent();
+  } catch (error) {
+    console.error('[Blood Extension] Failed to delete position:', error);
+    showNotification('Failed to delete position', 'error');
   }
 }
 
@@ -1436,6 +1471,20 @@ function attachEventListeners() {
             } else {
               await hidePosition(position);
             }
+          }
+        }
+        return;
+      }
+
+      // Handle delete button click (only for hidden positions)
+      if (e.target.classList.contains('axiom-position-delete')) {
+        e.stopPropagation();
+        const positionItem = e.target.closest('.axiom-position-item');
+        if (positionItem) {
+          const positionId = positionItem.getAttribute('data-position-id');
+          const position = hiddenPositions.find(p => p.id === positionId);
+          if (position) {
+            await deletePosition(position);
           }
         }
         return;
