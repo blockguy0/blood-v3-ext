@@ -23,6 +23,9 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
   cursor: grabbing !important;
   user-select: none;
+  transition: none !important;
+  will-change: transform;
+  backdrop-filter: none !important;
 }
 
 .axiom-panel--minimized {

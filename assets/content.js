@@ -283,6 +283,13 @@ function getAddressFromURL() {
     return { address: gmgnMatch[1], site: 'gmgn' };
   }
 
+  // Padre: /trade/solana/xxx (returns pool address like axiom)
+  const padreMatch = url.match(/padre\.gg\/trade\/solana\/([a-zA-Z0-9]+)/);
+  if (padreMatch) {
+    console.log('[Blood Extension] Padre URL matched, address:', padreMatch[1]);
+    return { address: padreMatch[1], site: 'padre' };
+  }
+
   console.log('[Blood Extension] No URL pattern matched for:', url);
   return null;
 }
@@ -346,7 +353,7 @@ async function autoSelectPositionFromURL() {
   selectedPosition = null;
 
   // For GMGN, the address is already the token address
-  // For Axiom, it might be pool address or token address
+  // For Axiom/Padre, it might be pool address or token address
 
   // First, check if address matches any mint_address directly
   let matchingPosition = allPositions.find(p =>
@@ -368,7 +375,7 @@ async function autoSelectPositionFromURL() {
     return;
   }
 
-  // For Axiom, try to resolve pool address to token address via GeckoTerminal
+  // For Axiom/Padre, try to resolve pool address to token address via GeckoTerminal
   console.log('[Blood Extension] Trying to resolve pool to token via GeckoTerminal...');
   const tokenAddress = await getTokenAddressFromPool(address);
 
@@ -1281,6 +1288,11 @@ function startDrag(e) {
   cachedPanelWidth = rect.width;
   cachedPanelHeight = rect.height;
 
+  // Set positioning mode once at start (not every frame)
+  currentPanel.style.left = '0';
+  currentPanel.style.top = '0';
+  currentPanel.style.right = 'auto';
+
   // Add global listeners
   document.addEventListener('mousemove', drag);
   document.addEventListener('mouseup', stopDrag);
@@ -1306,11 +1318,8 @@ function drag(e) {
     newX = Math.max(-cachedPanelWidth + minVisible, Math.min(newX, window.innerWidth - minVisible));
     newY = Math.max(0, Math.min(newY, window.innerHeight - minVisible));
 
-    // Apply position using transform for GPU acceleration
+    // Apply position using transform only (GPU accelerated, no reflow)
     currentPanel.style.transform = `translate(${newX}px, ${newY}px)`;
-    currentPanel.style.left = '0';
-    currentPanel.style.top = '0';
-    currentPanel.style.right = 'auto';
   });
 }
 
@@ -2313,10 +2322,10 @@ async function addWlBlWalletFromTools(type) {
   }
 }
 
-// Check if we're on a supported site (axiom.trade or gmgn.ai)
+// Check if we're on a supported site (axiom.trade, gmgn.ai, or padre.gg)
 function isSupportedSite() {
   const hostname = window.location.hostname;
-  return hostname.includes('axiom.trade') || hostname.includes('gmgn.ai');
+  return hostname.includes('axiom.trade') || hostname.includes('gmgn.ai') || hostname.includes('padre.gg');
 }
 
 // Legacy alias
@@ -2335,6 +2344,11 @@ function isTokenPage() {
   // GMGN: /sol/token/xxx
   if (/gmgn\.ai\/sol\/token\/[a-zA-Z0-9]+/.test(url)) {
     console.log('[Blood Extension] isTokenPage: true (gmgn)');
+    return true;
+  }
+  // Padre: /trade/solana/xxx (pool address like axiom)
+  if (/padre\.gg\/trade\/solana\/[a-zA-Z0-9]+/.test(url)) {
+    console.log('[Blood Extension] isTokenPage: true (padre)');
     return true;
   }
   console.log('[Blood Extension] isTokenPage: false, url:', url);
