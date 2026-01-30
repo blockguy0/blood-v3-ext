@@ -371,15 +371,16 @@
 /* Delete button (hidden positions only) */
 .axiom-position-delete {
   position: absolute;
-  right: 4px;
-  top: calc(50% + 12px);
+  right: 26px;
+  top: 50%;
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
   border: none;
   background: rgba(0, 0, 0, 0.6);
   color: rgba(255, 255, 255, 0.5);
-  font-size: 11px;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1;
   cursor: pointer;
   padding: 0;

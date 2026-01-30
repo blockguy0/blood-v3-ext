@@ -713,7 +713,7 @@ function generatePanelHTML() {
                     : `${(position.total_pnl_usd || 0) >= 0 ? '+' : ''}$${formatNumber(position.total_pnl_usd || 0)}`}</span>
                 </div>
                 <button class="axiom-position-action" title="${showHiddenPositions ? 'Activate position' : 'Hide position'}">${showHiddenPositions ? '↩' : '×'}</button>
-                ${showHiddenPositions ? '<button class="axiom-position-delete" title="Delete position">🗑</button>' : ''}
+                ${showHiddenPositions ? '<button class="axiom-position-delete" title="Delete position">−</button>' : ''}
               </div>
             `).join('')}
           </div>`;
