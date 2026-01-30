@@ -116,14 +116,21 @@ function saveHiddenWalletIds() {
 }
 
 function hideWallet(walletId) {
-  if (!hiddenWalletIds.includes(walletId)) {
-    hiddenWalletIds.push(walletId);
+  const walletIdStr = String(walletId);
+  if (!hiddenWalletIds.some(id => String(id) === walletIdStr)) {
+    hiddenWalletIds.push(walletIdStr);
     saveHiddenWalletIds();
+    // Deselect wallet when hiding
+    const wallet = allWallets.find(w => String(w.walletId) === walletIdStr);
+    if (wallet) {
+      wallet.selected = false;
+    }
   }
 }
 
 function unhideWallet(walletId) {
-  hiddenWalletIds = hiddenWalletIds.filter(id => id !== walletId);
+  const walletIdStr = String(walletId);
+  hiddenWalletIds = hiddenWalletIds.filter(id => String(id) !== walletIdStr);
   saveHiddenWalletIds();
 }
 
@@ -810,7 +817,7 @@ function generatePanelHTML() {
 function generateUnifiedWalletList() {
   // Filter wallets based on showHiddenWallets toggle
   const visibleWallets = allWallets.filter(w => {
-    const isHidden = hiddenWalletIds.includes(w.walletId);
+    const isHidden = hiddenWalletIds.some(id => String(id) === String(w.walletId));
     return showHiddenWallets ? isHidden : !isHidden;
   });
 
@@ -832,7 +839,7 @@ function generateUnifiedWalletList() {
     const positionWallet = positionWalletMap.get(wallet.walletId);
     const tokenBalance = positionWallet?.balance || 0;
     const tokenSymbol = selectedPosition?.token_symbol || '';
-    const isHidden = hiddenWalletIds.includes(wallet.walletId);
+    const isHidden = hiddenWalletIds.some(id => String(id) === String(wallet.walletId));
 
     // Format balance display: show both SOL and token balance
     const solDisplay = wallet.solBalance !== null && wallet.solBalance !== undefined
