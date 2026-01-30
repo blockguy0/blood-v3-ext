@@ -1141,149 +1141,6 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* =====================================================
-   SIDE PANEL STYLES
-   ===================================================== */
-
-/* Side Panel Toggle Button */
-.axiom-side-panel-toggle {
-  position: fixed;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 60px;
-  background: rgba(10, 10, 15, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-left: none;
-  border-radius: 0 6px 6px 0;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999997;
-  transition: all 0.3s ease;
-}
-
-.axiom-side-panel-toggle:hover {
-  background: rgba(20, 20, 25, 0.98);
-  color: #fff;
-  width: 28px;
-}
-
-.axiom-side-panel-toggle.open {
-  left: 320px;
-}
-
-/* Side Panel Container */
-.axiom-side-panel {
-  position: fixed;
-  left: 0;
-  top: 100px;
-  width: 320px;
-  height: calc(100vh - 120px);
-  background: rgba(10, 10, 15, 0.98);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-left: none;
-  border-radius: 0 8px 8px 0;
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  font-size: 14px;
-  z-index: 999998;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
-  transform: translateX(-100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.axiom-side-panel.open {
-  transform: translateX(0);
-}
-
-/* Side Panel Header */
-.axiom-side-panel__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
-  flex-shrink: 0;
-}
-
-.axiom-side-panel__header span {
-  font-weight: 700;
-  font-size: 15px;
-}
-
-.axiom-side-panel__header .close-btn {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 18px;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: all 0.2s;
-}
-
-.axiom-side-panel__header .close-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-/* Side Panel Tabs */
-.axiom-side-panel__tabs {
-  display: flex;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  flex-shrink: 0;
-}
-
-.axiom-side-panel__tabs .tab {
-  flex: 1;
-  padding: 12px 16px;
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-bottom: 2px solid transparent;
-}
-
-.axiom-side-panel__tabs .tab:hover {
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.axiom-side-panel__tabs .tab.active {
-  color: #ef4444;
-  border-bottom-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
-}
-
-/* Side Panel Content */
-.axiom-side-panel__content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-}
-
-.axiom-side-panel__content .tab-content {
-  display: none;
-}
-
-.axiom-side-panel__content .tab-content.active {
-  display: block;
-}
-
 /* Task Styles - Compact */
 .task-group {
   margin-bottom: 8px;
@@ -1609,24 +1466,20 @@
   font-size: 11px;
 }
 
-/* Side Panel Scrollbar */
-.axiom-side-panel__content::-webkit-scrollbar,
+/* WL/BL List Scrollbar */
 .wlbl-list::-webkit-scrollbar {
   width: 6px;
 }
 
-.axiom-side-panel__content::-webkit-scrollbar-track,
 .wlbl-list::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.02);
 }
 
-.axiom-side-panel__content::-webkit-scrollbar-thumb,
 .wlbl-list::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
 }
 
-.axiom-side-panel__content::-webkit-scrollbar-thumb:hover,
 .wlbl-list::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
 }

@@ -1713,9 +1713,7 @@ function attachEventListeners() {
       toolsPanel.classList.toggle('open');
       toolsBtn.classList.toggle('active');
       if (toolsPanel.classList.contains('open')) {
-        loadSidePanelData().then(() => {
-          updateToolsPanelContent();
-        });
+        loadToolsPanelData();
       }
     });
 
@@ -1989,44 +1987,16 @@ function sendMessage(action, data = {}) {
 }
 
 // =====================================================
-// SIDE PANEL - Tasks & WL/BL Wallets
+// TOOLS PANEL - Tasks & WL/BL Wallets Data
 // =====================================================
 
-let sidePanel = null;
-let sidePanelToggle = null;
-let sidePanelOpen = false;
-let sidePanelActiveTab = 'tasks';
-let sidePanelTasks = {};
-let sidePanelWlBl = [];
-let sidePanelGroups = []; // For wallet groups dropdown
-
-// Generate Side Panel HTML
-function generateSidePanelHTML() {
-  return `
-    <div class="axiom-side-panel">
-      <div class="axiom-side-panel__header">
-        <span>Tools</span>
-        <button class="close-btn">✕</button>
-      </div>
-      <div class="axiom-side-panel__tabs">
-        <button class="tab ${sidePanelActiveTab === 'tasks' ? 'active' : ''}" data-tab="tasks">Tasks</button>
-        <button class="tab ${sidePanelActiveTab === 'wlbl' ? 'active' : ''}" data-tab="wlbl">WL/BL</button>
-      </div>
-      <div class="axiom-side-panel__content">
-        <div class="tab-content ${sidePanelActiveTab === 'tasks' ? 'active' : ''}" id="tasks-tab">
-          ${generateTasksContent()}
-        </div>
-        <div class="tab-content ${sidePanelActiveTab === 'wlbl' ? 'active' : ''}" id="wlbl-tab">
-          ${generateWlBlContent()}
-        </div>
-      </div>
-    </div>
-  `;
-}
+let toolsPanelTasks = {};
+let toolsPanelWlBl = [];
+let toolsPanelGroups = [];
 
 // Generate Tasks Tab Content
 function generateTasksContent() {
-  if (!sidePanelTasks || Object.keys(sidePanelTasks).length === 0) {
+  if (!toolsPanelTasks || Object.keys(toolsPanelTasks).length === 0) {
     return '<div class="tasks-empty">No tasks available</div>';
   }
 
@@ -2037,11 +2007,9 @@ function generateTasksContent() {
     </div>
   `;
 
-  // sidePanelTasks should be { category: [tasks] } structure
-  for (const [category, tasks] of Object.entries(sidePanelTasks)) {
+  for (const [category, tasks] of Object.entries(toolsPanelTasks)) {
     if (!Array.isArray(tasks) || tasks.length === 0) continue;
 
-    // Get group status from first task (all tasks in group share same status)
     const groupStatus = tasks[0]?.status || 'idle';
 
     html += `
@@ -2069,8 +2037,7 @@ function generateTasksContent() {
 
 // Generate WL/BL Tab Content
 function generateWlBlContent() {
-  // Create datalist options from existing groups
-  const groupOptions = sidePanelGroups.map(g =>
+  const groupOptions = toolsPanelGroups.map(g =>
     `<option value="${g.id}">`
   ).join('');
 
@@ -2088,21 +2055,20 @@ function generateWlBlContent() {
     </div>
   `;
 
-  if (!sidePanelWlBl || sidePanelWlBl.length === 0) {
+  if (!toolsPanelWlBl || toolsPanelWlBl.length === 0) {
     html += '<div class="wlbl-empty">No wallets in WL/BL</div>';
     return html;
   }
 
-  // Group wallets by group_id
   const grouped = {};
-  for (const wallet of sidePanelWlBl) {
+  for (const wallet of toolsPanelWlBl) {
     const groupId = wallet.group_id || 'default';
     if (!grouped[groupId]) grouped[groupId] = [];
     grouped[groupId].push(wallet);
   }
 
   for (const [groupId, wallets] of Object.entries(grouped)) {
-    const groupName = sidePanelGroups.find(g => g.id === groupId)?.name || groupId;
+    const groupName = toolsPanelGroups.find(g => g.id === groupId)?.name || groupId;
     html += `
       <div class="wlbl-group" data-group-id="${groupId}">
         <div class="wlbl-group__header">${groupName}</div>
@@ -2130,105 +2096,39 @@ function shortenAddress(address) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
-// Inject Side Panel and Toggle Button
-function injectSidePanel() {
-  console.log('[Blood Extension] Injecting side panel...');
-
-  try {
-    // Remove existing elements
-    if (sidePanel) sidePanel.remove();
-    if (sidePanelToggle) sidePanelToggle.remove();
-
-    // Create toggle button
-    sidePanelToggle = document.createElement('div');
-    sidePanelToggle.className = 'axiom-side-panel-toggle';
-    sidePanelToggle.innerHTML = '▶';
-    sidePanelToggle.addEventListener('click', toggleSidePanel);
-    document.body.appendChild(sidePanelToggle);
-
-    // Create side panel
-    const panelContainer = document.createElement('div');
-    panelContainer.innerHTML = generateSidePanelHTML();
-    sidePanel = panelContainer.firstElementChild;
-    document.body.appendChild(sidePanel);
-
-    // Attach event listeners
-    attachSidePanelListeners();
-
-    console.log('[Blood Extension] Side panel injected successfully');
-  } catch (error) {
-    console.error('[Blood Extension] Error injecting side panel:', error);
-  }
-}
-
-// Toggle Side Panel open/close
-function toggleSidePanel() {
-  sidePanelOpen = !sidePanelOpen;
-
-  if (sidePanelOpen) {
-    sidePanel.classList.add('open');
-    sidePanelToggle.classList.add('open');
-    sidePanelToggle.innerHTML = '◀';
-    // Load data when opening
-    loadSidePanelData();
-  } else {
-    sidePanel.classList.remove('open');
-    sidePanelToggle.classList.remove('open');
-    sidePanelToggle.innerHTML = '▶';
-  }
-}
-
-// Load data for side panel
-async function loadSidePanelData() {
+// Load data for tools panel
+async function loadToolsPanelData() {
   try {
     // Load tasks
     const tasksResponse = await sendMessage('getTasks', {});
-    console.log('[Blood Extension] GET /tasks/ response:', JSON.stringify(tasksResponse.data, null, 2));
     if (tasksResponse.success && tasksResponse.data?.groups) {
-      // Transform API response: propagate group's meta.active to each task
-      sidePanelTasks = {};
+      toolsPanelTasks = {};
       for (const group of tasksResponse.data.groups) {
-        console.log('[Blood Extension] Group:', group.id, 'meta:', group.meta, 'tasks:', group.tasks?.length);
         const groupStatus = group.meta?.active ? 'running' : 'idle';
-        sidePanelTasks[group.id] = (group.tasks || []).map(task => ({
+        toolsPanelTasks[group.id] = (group.tasks || []).map(task => ({
           ...task,
           status: groupStatus,
           name: task.name || task.id || `Task ${task.id}`
         }));
       }
     } else if (tasksResponse.success) {
-      sidePanelTasks = tasksResponse.data || {};
+      toolsPanelTasks = tasksResponse.data || {};
     }
 
     // Load WL/BL wallets
     const wlblResponse = await sendMessage('getWlBlWallets', {});
     if (wlblResponse.success) {
-      sidePanelWlBl = wlblResponse.data?.wallets || wlblResponse.data || [];
-      // Extract unique groups from WL/BL wallets
-      const uniqueGroups = [...new Set(sidePanelWlBl.map(w => w.group_id).filter(Boolean))];
-      sidePanelGroups = uniqueGroups.map(id => ({ id, name: id }));
+      toolsPanelWlBl = wlblResponse.data?.wallets || wlblResponse.data || [];
+      const uniqueGroups = [...new Set(toolsPanelWlBl.map(w => w.group_id).filter(Boolean))];
+      toolsPanelGroups = uniqueGroups.map(id => ({ id, name: id }));
     }
 
     // Update panel content
-    updateSidePanelContent();
+    updateToolsPanelContent();
   } catch (error) {
-    console.error('[Blood Extension] Failed to load side panel data:', error);
+    console.error('[Blood Extension] Failed to load tools panel data:', error);
     showNotification('Failed to load panel data', 'error');
   }
-}
-
-// Update side panel content without full rebuild
-function updateSidePanelContent() {
-  if (!sidePanel) return;
-
-  const tasksTab = sidePanel.querySelector('#tasks-tab');
-  const wlblTab = sidePanel.querySelector('#wlbl-tab');
-
-  if (tasksTab) tasksTab.innerHTML = generateTasksContent();
-  if (wlblTab) wlblTab.innerHTML = generateWlBlContent();
-
-  // Reattach event listeners for new content
-  attachSidePanelContentListeners();
 }
 
 // Update tools panel content (attached to main panel)
@@ -2252,42 +2152,46 @@ function attachToolsPanelContentListeners() {
   if (!toolsPanel) return;
 
   // Start All Idle Tasks button
-  toolsPanel.querySelector('.start-all-idle-btn')?.addEventListener('click', async () => {
-    try {
-      showNotification('Starting all idle tasks...', 'info');
-      const response = await sendMessage('startIdleTasks', {});
-      if (response.success) {
-        showNotification('Idle tasks started', 'success');
-        await loadSidePanelData();
-        updateToolsPanelContent();
-      } else {
-        showNotification(`Failed: ${response.error}`, 'error');
+  const startAllBtn = toolsPanel.querySelector('.start-all-idle-btn');
+  if (startAllBtn) {
+    startAllBtn.onclick = async () => {
+      try {
+        showNotification('Starting all idle tasks...', 'info');
+        const response = await sendMessage('startIdleTasks', {});
+        if (response.success) {
+          showNotification('Idle tasks started', 'success');
+          await loadToolsPanelData();
+        } else {
+          showNotification(`Failed: ${response.error}`, 'error');
+        }
+      } catch (error) {
+        showNotification(`Error: ${error.message}`, 'error');
       }
-    } catch (error) {
-      showNotification(`Error: ${error.message}`, 'error');
-    }
-  });
+    };
+  }
 
   // Stop All Running Tasks button
-  toolsPanel.querySelector('.stop-all-running-btn')?.addEventListener('click', async () => {
-    try {
-      showNotification('Stopping all running tasks...', 'info');
-      const response = await sendMessage('stopRunningTasks', {});
-      if (response.success) {
-        showNotification('Running tasks stopped', 'success');
-        await loadSidePanelData();
-        updateToolsPanelContent();
-      } else {
-        showNotification(`Failed: ${response.error}`, 'error');
+  const stopAllBtn = toolsPanel.querySelector('.stop-all-running-btn');
+  if (stopAllBtn) {
+    stopAllBtn.onclick = async () => {
+      try {
+        showNotification('Stopping all running tasks...', 'info');
+        const response = await sendMessage('stopRunningTasks', {});
+        if (response.success) {
+          showNotification('Running tasks stopped', 'success');
+          await loadToolsPanelData();
+        } else {
+          showNotification(`Failed: ${response.error}`, 'error');
+        }
+      } catch (error) {
+        showNotification(`Error: ${error.message}`, 'error');
       }
-    } catch (error) {
-      showNotification(`Error: ${error.message}`, 'error');
-    }
-  });
+    };
+  }
 
   // Task start buttons (API uses group_id)
   toolsPanel.querySelectorAll('.task-btn.start-btn').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
+    btn.onclick = async (e) => {
       e.stopPropagation();
       const taskItem = btn.closest('.task-item');
       const groupId = taskItem?.dataset.groupId;
@@ -2299,20 +2203,19 @@ function attachToolsPanelContentListeners() {
         console.log('[Blood Extension] Start response:', response);
         if (response.success) {
           showNotification(`Task group started`, 'success');
-          await loadSidePanelData();
-          updateToolsPanelContent();
+          await loadToolsPanelData();
         } else {
           showNotification(`Failed: ${response.error}`, 'error');
         }
       } catch (error) {
         showNotification(`Error: ${error.message}`, 'error');
       }
-    });
+    };
   });
 
   // Task stop buttons
   toolsPanel.querySelectorAll('.task-btn.stop-btn').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
+    btn.onclick = async (e) => {
       e.stopPropagation();
       const taskItem = btn.closest('.task-item');
       const groupId = taskItem?.dataset.groupId;
@@ -2323,24 +2226,25 @@ function attachToolsPanelContentListeners() {
         const response = await sendMessage('stopTask', { task_id: groupId });
         if (response.success) {
           showNotification(`Task stopped`, 'success');
-          await loadSidePanelData();
-          updateToolsPanelContent();
+          await loadToolsPanelData();
         } else {
           showNotification(`Failed: ${response.error}`, 'error');
         }
       } catch (error) {
         showNotification(`Error: ${error.message}`, 'error');
       }
-    });
+    };
   });
 
   // WL/BL Add buttons
-  toolsPanel.querySelector('.wlbl-add .wl-btn')?.addEventListener('click', () => addWlBlWalletFromTools('whitelist'));
-  toolsPanel.querySelector('.wlbl-add .bl-btn')?.addEventListener('click', () => addWlBlWalletFromTools('blacklist'));
+  const wlBtn = toolsPanel.querySelector('.wlbl-add .wl-btn');
+  const blBtn = toolsPanel.querySelector('.wlbl-add .bl-btn');
+  if (wlBtn) wlBtn.onclick = () => addWlBlWalletFromTools('whitelist');
+  if (blBtn) blBtn.onclick = () => addWlBlWalletFromTools('blacklist');
 
   // WL/BL Delete buttons
   toolsPanel.querySelectorAll('.wlbl-item .delete-btn').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
+    btn.onclick = async (e) => {
       e.stopPropagation();
       const wlblItem = btn.closest('.wlbl-item');
       const walletId = wlblItem?.dataset.walletId;
@@ -2351,15 +2255,14 @@ function attachToolsPanelContentListeners() {
         const response = await sendMessage('deleteWlBlWallet', { group_id: groupId, wallet_id: walletId });
         if (response.success) {
           showNotification('Wallet removed', 'success');
-          await loadSidePanelData();
-          updateToolsPanelContent();
+          await loadToolsPanelData();
         } else {
           showNotification(`Failed: ${response.error}`, 'error');
         }
       } catch (error) {
         showNotification(`Error: ${error.message}`, 'error');
       }
-    });
+    };
   });
 }
 
@@ -2394,182 +2297,7 @@ async function addWlBlWalletFromTools(type) {
     if (response.success) {
       showNotification(`Wallet added to ${type === 'whitelist' ? 'WL' : 'BL'}`, 'success');
       addressInput.value = '';
-      await loadSidePanelData();
-      updateToolsPanelContent();
-    } else {
-      showNotification(`Failed: ${response.error}`, 'error');
-    }
-  } catch (error) {
-    showNotification(`Error: ${error.message}`, 'error');
-  }
-}
-
-// Attach event listeners for side panel
-function attachSidePanelListeners() {
-  if (!sidePanel) return;
-
-  // Close button
-  sidePanel.querySelector('.close-btn')?.addEventListener('click', () => {
-    toggleSidePanel();
-  });
-
-  // Tab switching
-  sidePanel.querySelectorAll('.axiom-side-panel__tabs .tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const tabName = tab.dataset.tab;
-      sidePanelActiveTab = tabName;
-
-      // Update active tab button
-      sidePanel.querySelectorAll('.axiom-side-panel__tabs .tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      // Update active content
-      sidePanel.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-      sidePanel.querySelector(`#${tabName}-tab`)?.classList.add('active');
-    });
-  });
-
-  // Attach content-specific listeners
-  attachSidePanelContentListeners();
-}
-
-// Attach event listeners for side panel content (tasks/wlbl)
-function attachSidePanelContentListeners() {
-  if (!sidePanel) return;
-
-  // Start All Idle Tasks button
-  sidePanel.querySelector('.start-all-idle-btn')?.addEventListener('click', async () => {
-    try {
-      showNotification('Starting all idle tasks...', 'info');
-      const response = await sendMessage('startIdleTasks', {});
-      if (response.success) {
-        showNotification('Idle tasks started', 'success');
-        await loadSidePanelData();
-      } else {
-        showNotification(`Failed: ${response.error}`, 'error');
-      }
-    } catch (error) {
-      showNotification(`Error: ${error.message}`, 'error');
-    }
-  });
-
-  // Stop All Running Tasks button
-  sidePanel.querySelector('.stop-all-running-btn')?.addEventListener('click', async () => {
-    try {
-      showNotification('Stopping all running tasks...', 'info');
-      const response = await sendMessage('stopRunningTasks', {});
-      if (response.success) {
-        showNotification('Running tasks stopped', 'success');
-        await loadSidePanelData();
-      } else {
-        showNotification(`Failed: ${response.error}`, 'error');
-      }
-    } catch (error) {
-      showNotification(`Error: ${error.message}`, 'error');
-    }
-  });
-
-  // Task start buttons
-  sidePanel.querySelectorAll('.task-btn.start-btn').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const taskItem = btn.closest('.task-item');
-      const groupId = taskItem?.dataset.groupId;
-      if (!groupId) return;
-
-      try {
-        const response = await sendMessage('startTask', { task_id: groupId });
-        if (response.success) {
-          showNotification(`Task started`, 'success');
-          await loadSidePanelData();
-        } else {
-          showNotification(`Failed: ${response.error}`, 'error');
-        }
-      } catch (error) {
-        showNotification(`Error: ${error.message}`, 'error');
-      }
-    });
-  });
-
-  // Task stop buttons
-  sidePanel.querySelectorAll('.task-btn.stop-btn').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const taskItem = btn.closest('.task-item');
-      const groupId = taskItem?.dataset.groupId;
-      if (!groupId) return;
-
-      try {
-        const response = await sendMessage('stopTask', { task_id: groupId });
-        if (response.success) {
-          showNotification(`Task stopped`, 'success');
-          await loadSidePanelData();
-        } else {
-          showNotification(`Failed: ${response.error}`, 'error');
-        }
-      } catch (error) {
-        showNotification(`Error: ${error.message}`, 'error');
-      }
-    });
-  });
-
-  // WL/BL Add buttons
-  sidePanel.querySelector('.wlbl-add .wl-btn')?.addEventListener('click', () => addWlBlWallet('whitelist'));
-  sidePanel.querySelector('.wlbl-add .bl-btn')?.addEventListener('click', () => addWlBlWallet('blacklist'));
-
-  // WL/BL Delete buttons
-  sidePanel.querySelectorAll('.wlbl-item .delete-btn').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const wlblItem = btn.closest('.wlbl-item');
-      const walletId = wlblItem?.dataset.walletId;
-      const groupId = wlblItem?.dataset.groupId;
-      if (!walletId || !groupId) return;
-
-      try {
-        const response = await sendMessage('deleteWlBlWallet', { group_id: groupId, wallet_id: walletId });
-        if (response.success) {
-          showNotification('Wallet removed', 'success');
-          await loadSidePanelData();
-        } else {
-          showNotification(`Failed: ${response.error}`, 'error');
-        }
-      } catch (error) {
-        showNotification(`Error: ${error.message}`, 'error');
-      }
-    });
-  });
-}
-
-// Add wallet to WL/BL
-async function addWlBlWallet(type) {
-  const addressInput = sidePanel.querySelector('#wlbl-wallet-input');
-  const groupInput = sidePanel.querySelector('#wlbl-group-input');
-
-  const address = addressInput?.value?.trim();
-  const groupId = groupInput?.value?.trim();
-
-  if (!address) {
-    showNotification('Enter a wallet address', 'error');
-    return;
-  }
-
-  if (!groupId) {
-    showNotification('Enter a group name', 'error');
-    return;
-  }
-
-  try {
-    const response = await sendMessage('addWlBlWallet', {
-      address: address,
-      group_id: groupId,
-      type: type
-    });
-
-    if (response.success) {
-      showNotification(`Wallet added to ${type === 'whitelist' ? 'WL' : 'BL'}`, 'success');
-      addressInput.value = '';
-      await loadSidePanelData();
+      await loadToolsPanelData();
     } else {
       showNotification(`Failed: ${response.error}`, 'error');
     }
@@ -2742,16 +2470,14 @@ if (isSupportedSite()) {
   // Set up SPA navigation listeners (must be done once at load time)
   setupNavigationListeners();
 
-  // Always inject side panel on supported sites (legacy panel from screen edge)
+  // Check if on token page and auto-open panel
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      injectSidePanel();
       if (isTokenPage()) {
         checkAutoOpen();
       }
     });
   } else {
-    injectSidePanel();
     if (isTokenPage()) {
       checkAutoOpen();
     }

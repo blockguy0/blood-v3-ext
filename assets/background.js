@@ -184,9 +184,35 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.action === 'startIdleTasks') {
-    makeApiRequest('/tasks/idle/start', { method: 'POST' })
-      .then(result => sendResponse({ success: true, data: result }))
-      .catch(error => sendResponse({ success: false, error: error.message }));
+    // No bulk start endpoint - must get all tasks and start idle ones individually
+    (async () => {
+      try {
+        const tasksResult = await makeApiRequest('/tasks/');
+        console.log('[Background] startIdleTasks - API response:', JSON.stringify(tasksResult, null, 2));
+        const groups = tasksResult.groups || [];
+        let startedCount = 0;
+
+        for (const group of groups) {
+          console.log('[Background] Group:', group.id, 'active:', group.meta?.active);
+          // Check if group is idle (not active)
+          if (!group.meta?.active) {
+            try {
+              console.log('[Background] Starting idle group:', group.id);
+              const result = await makeApiRequest(`/tasks/${group.id}`, { method: 'POST' });
+              console.log('[Background] Start result:', result);
+              startedCount++;
+            } catch (e) {
+              console.error(`Failed to start task ${group.id}:`, e);
+            }
+          }
+        }
+
+        console.log('[Background] Total started:', startedCount);
+        sendResponse({ success: true, data: { started: startedCount } });
+      } catch (error) {
+        sendResponse({ success: false, error: error.message });
+      }
+    })();
     return true;
   }
 
