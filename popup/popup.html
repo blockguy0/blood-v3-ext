@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Extension</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="popup-header">
+      <div class="popup-logo"><img src="../assets/logo_new.png" alt="Blood" style="width: 48px; height: 48px;"></div>
+      <h1>Blood Extension</h1>
+    </div>
+
+    <!-- Connected View -->
+    <div id="connected-view" class="view" style="display: none;">
+      <div class="auth-info">
+        <div class="status-badge status-badge--connected">
+          <span class="status-dot"></span>
+          <span>Connected to Blood</span>
+        </div>
+        <p class="status-text">Extension is ready</p>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="auto-open-checkbox" class="checkbox-input">
+          <span>Auto-open positions panel on axiom.trade</span>
+        </label>
+        <p class="help-text">When enabled, the positions panel will automatically appear on axiom.trade pages</p>
+      </div>
+
+      <div class="form-group">
+        <label for="vps-address">VPS Address</label>
+        <div class="input-group">
+          <input type="text" id="vps-address" class="form-input" placeholder="http://IP:PORT">
+          <button id="save-vps-btn" class="btn btn-small">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disconnected View -->
+    <div id="disconnected-view" class="view" style="display: none;">
+      <div class="auth-info">
+        <div class="status-badge status-badge--disconnected">
+          <span class="status-dot status-dot--red"></span>
+          <span>Not Connected</span>
+        </div>
+        <p class="status-text error-text">Blood API is not available</p>
+        <p class="help-text">Make sure Blood is running on the configured VPS address</p>
+      </div>
+
+      <div class="form-group">
+        <label for="vps-address-disconnected">VPS Address</label>
+        <div class="input-group">
+          <input type="text" id="vps-address-disconnected" class="form-input" placeholder="http://IP:PORT">
+          <button id="save-vps-btn-disconnected" class="btn btn-small">Save</button>
+        </div>
+      </div>
+
+      <button id="retry-btn" class="btn btn-primary">Retry Connection</button>
+    </div>
+
+    <!-- Loading View -->
+    <div id="loading-view" class="view">
+      <div class="loading-spinner"></div>
+      <p>Checking Blood API...</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

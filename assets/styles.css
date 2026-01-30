@@ -1,0 +1,1695 @@
+/* Axiom Trade Extension Styles */
+
+.axiom-panel {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  width: 340px;
+  max-height: calc(100vh - 120px);
+  overflow: visible;
+  background: rgba(10, 10, 15, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 14px;
+  z-index: 999999;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.axiom-panel.dragging {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  cursor: grabbing !important;
+  user-select: none;
+}
+
+.axiom-panel--minimized {
+  top: auto !important;
+  bottom: 0 !important;
+  right: 20px !important;
+  width: auto !important;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+.axiom-panel--minimized .axiom-panel__content {
+  display: none;
+}
+
+.axiom-panel--minimized .axiom-panel__header {
+  border-bottom: none;
+  cursor: pointer;
+  padding: 2px 6px !important;
+}
+
+.axiom-panel--minimized .axiom-panel__title {
+  gap: 4px;
+  font-size: 12px;
+}
+
+.axiom-panel--minimized .axiom-panel__logo {
+  width: 18px;
+  height: 18px;
+}
+
+.axiom-panel--minimized .axiom-panel__header-buttons {
+  gap: 2px;
+}
+
+.axiom-panel--minimized .axiom-panel__minimize,
+.axiom-panel--minimized .axiom-panel__close {
+  width: 22px;
+  height: 22px;
+  font-size: 18px;
+}
+
+.axiom-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: grab;
+  user-select: none;
+}
+
+.axiom-panel__header:active {
+  cursor: grabbing;
+}
+
+.axiom-panel__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.axiom-panel__logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.axiom-panel__header-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.axiom-panel__tools,
+.axiom-panel__minimize,
+.axiom-panel__close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.axiom-panel__tools {
+  font-size: 14px;
+}
+
+.axiom-panel__tools:hover,
+.axiom-panel__minimize:hover,
+.axiom-panel__close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.axiom-panel__tools.active {
+  color: #4CAF50;
+  background: rgba(76, 175, 80, 0.15);
+}
+
+.axiom-panel__content {
+  padding: 20px 10px;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+}
+
+.axiom-panel__section {
+  margin-bottom: 20px;
+}
+
+.axiom-panel__section:last-child {
+  margin-bottom: 0;
+}
+
+.axiom-panel__section label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Position List */
+.axiom-position-list {
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+}
+
+/* Position Item */
+.axiom-position-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.axiom-position-item:last-child {
+  border-bottom: none;
+}
+
+.axiom-position-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.axiom-position-item.active {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.08) 100%);
+  border-left: 3px solid rgba(239, 68, 68, 0.6);
+  padding-left: 7px;
+}
+
+.axiom-position-item.active:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.12) 100%);
+}
+
+.axiom-position-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.axiom-position-icon-placeholder {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(239, 68, 68, 0.2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.axiom-position-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.axiom-position-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.axiom-position-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.axiom-position-balance {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.axiom-position-wallets {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Position PNL Container */
+.axiom-position-pnl-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.axiom-position-pnl-container.positive {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.axiom-position-pnl-container.negative {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.axiom-pnl-percent {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.axiom-position-pnl-container.positive .axiom-pnl-percent {
+  color: #4ade80;
+}
+
+.axiom-position-pnl-container.negative .axiom-pnl-percent {
+  color: #f87171;
+}
+
+.axiom-pnl-value {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.axiom-position-pnl-container.positive .axiom-pnl-value {
+  color: #4ade80;
+}
+
+.axiom-position-pnl-container.negative .axiom-pnl-value {
+  color: #f87171;
+}
+
+.axiom-pnl-toggle {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.axiom-pnl-toggle:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* View Toggle (Active/Hidden) */
+.axiom-panel__view-toggle {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.axiom-view-option {
+  font-size: 10px;
+  padding: 3px 6px;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+
+.axiom-view-option:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.axiom-view-option.active {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fff;
+}
+
+/* Position Action Button (hide/activate) */
+.axiom-position-item {
+  position: relative;
+}
+
+.axiom-position-action {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 4px;
+  opacity: 0;
+  transition: all 0.15s;
+  z-index: 1;
+}
+
+.axiom-position-item:hover .axiom-position-action {
+  opacity: 1;
+}
+
+.axiom-position-action:hover {
+  color: #fff;
+  background: #ef4444;
+}
+
+/* Token Address */
+.axiom-panel__address {
+  padding: 12px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.axiom-address-full {
+  display: block;
+  line-height: 1.4;
+}
+
+/* Stats Grid */
+.axiom-panel__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.axiom-stat {
+  text-align: center;
+  padding: 8px 10px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 6px;
+}
+
+.axiom-stat-label {
+  display: block;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+}
+
+.axiom-stat-value {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Mode Buttons */
+.axiom-mode-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.axiom-mode-btn {
+  padding: 6px 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.axiom-mode-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.axiom-mode-btn.active {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-color: #ef4444;
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.axiom-mode-btn.active:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+}
+
+/* Wallet List */
+.axiom-wallet-list {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.axiom-wallet-item {
+  display: flex;
+  padding: 8px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+  cursor: pointer;
+  align-items: center;
+}
+
+.axiom-wallet-item:last-child {
+  border-bottom: none;
+}
+
+.axiom-wallet-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.axiom-wallet-item.active {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(239, 68, 68, 0.08) 100%);
+  border-left: 3px solid rgba(239, 68, 68, 0.6);
+  padding-left: 9px;
+}
+
+.axiom-wallet-item.active:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(239, 68, 68, 0.12) 100%);
+}
+
+.axiom-wallet-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.axiom-wallet-name {
+  font-weight: 600;
+  font-size: 12px;
+  color: #fff;
+}
+
+.axiom-wallet-balance {
+  font-size: 12px;
+  font-weight: 700;
+  color: #4ade80;
+}
+
+.axiom-wallet-balances {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.axiom-wallet-sol {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.axiom-wallet-token {
+  font-size: 12px;
+  font-weight: 700;
+  color: #4ade80;
+}
+
+.axiom-wallet-empty {
+  padding: 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+}
+
+/* Wallets Header */
+.axiom-wallets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.axiom-wallet-view-toggle {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 2px;
+  gap: 2px;
+}
+
+/* Wallet Action Button */
+.axiom-wallet-item {
+  position: relative;
+}
+
+.axiom-wallet-action {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 4px;
+  opacity: 0;
+  transition: all 0.15s;
+  z-index: 1;
+}
+
+.axiom-wallet-item:hover .axiom-wallet-action {
+  opacity: 1;
+}
+
+.axiom-wallet-action:hover {
+  color: #fff;
+  background: #ef4444;
+}
+
+/* Button Grid */
+.axiom-panel__buttons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+/* Wallet Select Buttons Container */
+.wallet-select-buttons {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 10px;
+}
+
+/* Wallet Select Buttons */
+.axiom-wallet-select-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 6px 0;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.axiom-wallet-select-btn:hover {
+  color: #ef4444;
+}
+
+.axiom-wallet-select-btn:active {
+  color: #dc2626;
+}
+
+/* Buy Buttons (green) */
+.axiom-buy-btn {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.15) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #fff;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.axiom-buy-btn:hover {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(34, 197, 94, 0.25) 100%);
+  border-color: rgba(34, 197, 94, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.axiom-buy-btn:active {
+  transform: translateY(0);
+}
+
+.axiom-buy-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Edit button (gear icon) */
+.axiom-edit-btn {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.axiom-edit-btn:hover {
+  color: #fff;
+  transform: rotate(45deg);
+}
+
+/* Editing state for buttons */
+.axiom-buy-btn.editing,
+.axiom-sell-btn.editing {
+  padding: 2px;
+}
+
+/* Inline edit input */
+.axiom-edit-input {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  padding: 2px;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.axiom-edit-input::-webkit-outer-spin-button,
+.axiom-edit-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.axiom-edit-input:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Sell Buttons */
+.axiom-sell-btn {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.15) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fff;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.axiom-sell-btn:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(239, 68, 68, 0.25) 100%);
+  border-color: rgba(239, 68, 68, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.axiom-sell-btn:active {
+  transform: translateY(0);
+}
+
+.axiom-sell-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Primary Button */
+.axiom-sell-btn--primary {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-color: #ef4444;
+  grid-column: span 2;
+}
+
+.axiom-sell-btn--primary:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+}
+
+/* Input Group */
+.axiom-panel__input-group {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.axiom-panel__input-group input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.axiom-panel__input-group input:focus {
+  border-color: rgba(239, 68, 68, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.axiom-panel__input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.axiom-panel__input-group input::-webkit-outer-spin-button,
+.axiom-panel__input-group input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.axiom-panel__input-group input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.axiom-panel__input-group button {
+  white-space: nowrap;
+  min-width: 60px;
+  height: 100%;
+  grid-column: auto !important;
+}
+
+.axiom-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.axiom-input:focus {
+  border-color: rgba(239, 68, 68, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Select Dropdown */
+.axiom-select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.axiom-select:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.axiom-select:focus {
+  border-color: rgba(239, 68, 68, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.axiom-select option {
+  background: #1a1a1f;
+  color: #fff;
+}
+
+/* Status */
+.axiom-status {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.axiom-status--success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.axiom-status--error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.axiom-status--loading {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+}
+
+/* Notifications */
+.axiom-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(10, 10, 15, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 10000000;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 280px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.axiom-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.axiom-notification--success {
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.axiom-notification--error {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.axiom-notification--info {
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+/* Scrollbar */
+.axiom-panel__content::-webkit-scrollbar,
+.axiom-wallet-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.axiom-panel__content::-webkit-scrollbar-track,
+.axiom-wallet-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.axiom-panel__content::-webkit-scrollbar-thumb,
+.axiom-wallet-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.axiom-panel__content::-webkit-scrollbar-thumb:hover,
+.axiom-wallet-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Position List Styles */
+.axiom-position-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.axiom-position-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.axiom-position-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(239, 68, 68, 0.3);
+  transform: translateX(-2px);
+}
+
+.axiom-position-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.axiom-position-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.axiom-position-icon-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.axiom-position-info {
+  flex: 1;
+}
+
+.axiom-position-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.axiom-position-symbol {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.axiom-position-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.axiom-stat-row {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.axiom-stat-row span:last-child {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Token Detail Header */
+.axiom-token-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.axiom-token-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.axiom-token-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.axiom-token-symbol {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Back Button */
+.axiom-back-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.axiom-back-btn:hover {
+  color: #fff;
+  transform: translateX(-2px);
+}
+
+/* Empty State */
+.axiom-empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.axiom-empty-state p {
+  margin-bottom: 16px;
+}
+
+/* Empty Positions (compact) */
+.axiom-empty-positions {
+  padding: 20px;
+  text-align: center;
+}
+
+.axiom-empty-text {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+}
+
+.axiom-reload-btn {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.15) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.axiom-reload-btn:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(239, 68, 68, 0.2) 100%);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* Position List Scrollbar */
+.axiom-position-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.axiom-position-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.axiom-position-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.axiom-position-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* =====================================================
+   SIDE PANEL STYLES
+   ===================================================== */
+
+/* Side Panel Toggle Button */
+.axiom-side-panel-toggle {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 60px;
+  background: rgba(10, 10, 15, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999997;
+  transition: all 0.3s ease;
+}
+
+.axiom-side-panel-toggle:hover {
+  background: rgba(20, 20, 25, 0.98);
+  color: #fff;
+  width: 28px;
+}
+
+.axiom-side-panel-toggle.open {
+  left: 320px;
+}
+
+/* Side Panel Container */
+.axiom-side-panel {
+  position: fixed;
+  left: 0;
+  top: 100px;
+  width: 320px;
+  height: calc(100vh - 120px);
+  background: rgba(10, 10, 15, 0.98);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 14px;
+  z-index: 999998;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.axiom-side-panel.open {
+  transform: translateX(0);
+}
+
+/* Side Panel Header */
+.axiom-side-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
+}
+
+.axiom-side-panel__header span {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.axiom-side-panel__header .close-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.axiom-side-panel__header .close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Side Panel Tabs */
+.axiom-side-panel__tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.axiom-side-panel__tabs .tab {
+  flex: 1;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.axiom-side-panel__tabs .tab:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.axiom-side-panel__tabs .tab.active {
+  color: #ef4444;
+  border-bottom-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+/* Side Panel Content */
+.axiom-side-panel__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.axiom-side-panel__content .tab-content {
+  display: none;
+}
+
+.axiom-side-panel__content .tab-content.active {
+  display: block;
+}
+
+/* Task Styles - Compact */
+.task-group {
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.task-group__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.task-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.task-status.running {
+  background: #22c55e;
+  box-shadow: 0 0 4px rgba(34, 197, 94, 0.5);
+  animation: pulse 1.5s infinite;
+}
+
+.task-status.idle {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.task-status.error {
+  background: #ef4444;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.task-name {
+  flex: 1;
+  font-size: 11px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.task-btn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  transition: all 0.2s;
+}
+
+.task-btn.start-btn {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.task-btn.start-btn:hover {
+  background: rgba(34, 197, 94, 0.3);
+}
+
+.task-btn.stop-btn {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.task-btn.stop-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+/* Tasks Buttons Row */
+.tasks-buttons-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+/* Start All Idle Button */
+.start-all-idle-btn {
+  flex: 1;
+  padding: 6px 10px;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.15) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.start-all-idle-btn:hover {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(34, 197, 94, 0.25) 100%);
+  border-color: rgba(34, 197, 94, 0.6);
+}
+
+/* Stop All Running Button */
+.stop-all-running-btn {
+  flex: 1;
+  padding: 6px 10px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.15) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stop-all-running-btn:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(239, 68, 68, 0.25) 100%);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* WL/BL Styles - Compact */
+.wlbl-add {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+.wlbl-add input {
+  width: 100%;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  color: #fff;
+  font-size: 11px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.wlbl-add input:focus {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.wlbl-add input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.wlbl-add__buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.wlbl-add .wl-btn,
+.wlbl-add .bl-btn {
+  flex: 1;
+  padding: 6px;
+  border: none;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.wlbl-add .wl-btn {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.wlbl-add .wl-btn:hover {
+  background: rgba(34, 197, 94, 0.3);
+}
+
+.wlbl-add .bl-btn {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.wlbl-add .bl-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+/* WL/BL Group */
+.wlbl-group {
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.wlbl-group__header {
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* WL/BL List */
+.wlbl-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.wlbl-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+}
+
+.wlbl-item:last-child {
+  border-bottom: none;
+}
+
+.wlbl-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.wlbl-type {
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.wlbl-type.wl {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.wlbl-type.bl {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.wallet-address {
+  flex: 1;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wlbl-item .delete-btn {
+  width: 18px;
+  height: 18px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.wlbl-item .delete-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+/* Empty States */
+.tasks-empty,
+.wlbl-empty {
+  padding: 20px 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+/* Side Panel Scrollbar */
+.axiom-side-panel__content::-webkit-scrollbar,
+.wlbl-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.axiom-side-panel__content::-webkit-scrollbar-track,
+.wlbl-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.axiom-side-panel__content::-webkit-scrollbar-thumb,
+.wlbl-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.axiom-side-panel__content::-webkit-scrollbar-thumb:hover,
+.wlbl-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =====================================================
+   TOOLS SLIDE PANEL (attached to main panel)
+   ===================================================== */
+
+/* Tools slide panel */
+.axiom-tools-panel {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 280px;
+  height: 100%;
+  background: rgba(10, 10, 15, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.axiom-tools-panel.open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Tools panel tabs */
+.axiom-tools-panel__tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.axiom-tools-panel__tabs .tab {
+  flex: 1;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.axiom-tools-panel__tabs .tab:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.axiom-tools-panel__tabs .tab.active {
+  color: #ef4444;
+  border-bottom-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+/* Tools panel content */
+.axiom-tools-panel__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.axiom-tools-panel__content .tab-content {
+  display: none;
+}
+
+.axiom-tools-panel__content .tab-content.active {
+  display: block;
+}
+
+/* Tools panel scrollbar */
+.axiom-tools-panel__content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.axiom-tools-panel__content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.axiom-tools-panel__content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.axiom-tools-panel__content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}

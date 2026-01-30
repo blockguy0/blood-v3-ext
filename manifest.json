@@ -1,0 +1,57 @@
+{
+  "name": "Blood Extension",
+  "version": "2.0.0",
+  "manifest_version": 3,
+  "description": "Quick sell panel for axiom.trade token pages - Blood v3",
+
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "scripting"
+  ],
+
+  "host_permissions": [
+    "*://axiom.trade/*",
+    "*://gmgn.ai/*",
+    "http://*/*",
+    "https://*.axiom.trade/*"
+  ],
+
+  "background": {
+    "service_worker": "assets/background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://axiom.trade/*", "*://gmgn.ai/*"],
+      "js": [
+        "assets/content.js"
+      ],
+      "css": ["assets/styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*"],
+      "matches": ["*://axiom.trade/*", "*://gmgn.ai/*"]
+    }
+  ],
+
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  }
+}
