@@ -27,6 +27,7 @@
 
 .axiom-panel--minimized {
   top: auto !important;
+  left: auto !important;
   bottom: 0 !important;
   right: 20px !important;
   width: auto !important;
