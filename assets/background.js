@@ -167,7 +167,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'stopTask') {
     const endpoint = `/tasks/${message.data.task_id}`;
     console.log('[Background] Stopping task, endpoint:', endpoint, 'task_id:', message.data.task_id);
-    makeApiRequest(endpoint, { method: 'PATCH' })
+    makeApiRequest(endpoint, { method: 'PUT' })
       .then(result => {
         console.log('[Background] Stop task result:', result);
         sendResponse({ success: true, data: result });
@@ -228,7 +228,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           // Check if group is active (running)
           if (group.meta?.active) {
             try {
-              await makeApiRequest(`/tasks/${group.id}`, { method: 'PATCH' });
+              await makeApiRequest(`/tasks/${group.id}`, { method: 'PUT' });
               stoppedCount++;
             } catch (e) {
               console.error(`Failed to stop task ${group.id}:`, e);

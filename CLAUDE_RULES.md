@@ -18,7 +18,7 @@ mcp__gitbook__searchDocumentation("endpoint name")
 - `GET /tasks/` - Get all tasks grouped by categories
 - `POST /tasks/` - Register tasks
 - `POST /tasks/{task_id}` - Start a specific task by ID
-- `PATCH /tasks/{task_id}` - Stop a specific task by ID
+- `PUT /tasks/{task_id}` - Stop a specific task by ID
 - `DELETE /tasks/{task_id}` - Delete a specific task by ID
 - `POST /tasks/idle/start` - Start all idle tasks
 

@@ -258,6 +258,8 @@ let isDragging = false;
 let dragOffset = { x: 0, y: 0 };
 let cachedPanelWidth = 0;
 let cachedPanelHeight = 0;
+let cachedWindowWidth = 0;
+let cachedWindowHeight = 0;
 let animationFrameId = null;
 let panelPosition = null; // Will be loaded from localStorage or use defaults
 
@@ -1284,14 +1286,18 @@ function startDrag(e) {
   dragOffset.x = e.clientX - rect.left;
   dragOffset.y = e.clientY - rect.top;
 
-  // Cache panel dimensions to avoid reflow during drag
+  // Cache dimensions to avoid reflow during drag
   cachedPanelWidth = rect.width;
   cachedPanelHeight = rect.height;
+  cachedWindowWidth = window.innerWidth;
+  cachedWindowHeight = window.innerHeight;
 
-  // Set positioning mode once at start (not every frame)
+  // Convert current position to transform-based positioning
+  // Set left/top to 0 and use transform for the actual position
   currentPanel.style.left = '0';
   currentPanel.style.top = '0';
   currentPanel.style.right = 'auto';
+  currentPanel.style.transform = `translate3d(${rect.left}px, ${rect.top}px, 0)`;
 
   // Add global listeners
   document.addEventListener('mousemove', drag);
@@ -1315,11 +1321,11 @@ function drag(e) {
 
     // Constrain to viewport bounds using cached dimensions (keep at least 50px visible)
     const minVisible = 50;
-    newX = Math.max(-cachedPanelWidth + minVisible, Math.min(newX, window.innerWidth - minVisible));
-    newY = Math.max(0, Math.min(newY, window.innerHeight - minVisible));
+    newX = Math.max(-cachedPanelWidth + minVisible, Math.min(newX, cachedWindowWidth - minVisible));
+    newY = Math.max(0, Math.min(newY, cachedWindowHeight - minVisible));
 
-    // Apply position using transform only (GPU accelerated, no reflow)
-    currentPanel.style.transform = `translate(${newX}px, ${newY}px)`;
+    // Apply position using transform3d (forces GPU layer, no reflow)
+    currentPanel.style.transform = `translate3d(${newX}px, ${newY}px, 0)`;
   });
 }
 
